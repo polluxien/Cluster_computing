@@ -48,7 +48,11 @@ https://www.glennklockwood.com/garden/InfiniBand
 ##### c) Wie viele unterschiedliche kürzeste Wege zwischen zwei maximal entfernten Knoten gibt es in den folgenden Netzwerktopologien? Wie groß ist die maximale Entfernung? Welche Auswirkungen hat das?
 
 1. 2D-Gitter mit n x n Knoten
+    - max: (n - 1) + (n - 1) = 2(n - 1)
 2. 2D-Torus mit n x n Knoten
+    - max: n
 3. Hypercube mit der Dimension n
+    - max: n
 4. Bus mit n Knoten
+    - max: n - 1
 
