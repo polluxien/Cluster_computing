@@ -4,110 +4,134 @@
 #include <string.h>
 #include <mpi.h>
 
-#define MATRIX_SIZE_M 100
-#define MATRIX_SIZE_P 90
-#define MATRIX_SIZE_N 80 
+#define OUTPUT_ENABLED 1
+
+#define MATRIX_SIZE_M 3
+#define MATRIX_SIZE_P 4
+#define MATRIX_SIZE_N 5
 
 typedef struct Matrix Matrix;
 
-struct Matrix {
+struct Matrix
+{
     int height;
     int width;
     int *values;
 };
 
+// MPI helpers.
+void mpiBroadcastMatrix(Matrix *m, int rank);
+Matrix *mpiGatherMatrices(Matrix m, int rank, int count);
+void mpiGetWorkRange(int work_index, int work_count, int data_size, int *offsetOut, int *sizeOut);
 
-void   getWorkRange(int work_index, int work_count, int data_size, int *offsetOut, int *sizeOut);
+// Matrix
 Matrix matrixAlloc(int height, int width);
-void   matrixSum(Matrix a, Matrix b, Matrix out);
-void   matrixPrint(Matrix m);
-void   matrixZero(Matrix m);
-void   matrixFillRandom(Matrix m);
-int    getMatrixIndex(Matrix m, int row, int column);
-void   matrixMultiply(Matrix a, Matrix b, Matrix out, int rowStart, int rowEnd);
+void matrixPrint(Matrix m);
+void matrixZero(Matrix m);
+void matrixFillRandom(Matrix m);
+int getMatrixIndex(Matrix m, int row, int column);
+void matrixMultiply(Matrix a, Matrix b, Matrix out, int rowStart, int rowEnd);
 
-
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     MPI_Init(&argc, &argv);
-    
+
+    // Get process rank and total process count.
     int rank;
     int count;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &count);
 
-    int centerSize = 70;
-    Matrix a = matrixAlloc(8, centerSize);
-    Matrix b = matrixAlloc(centerSize, 4);
-    Matrix c = matrixAlloc(a.height, b.width);
+    Matrix a, b, c;
 
-    if (rank == 0) {
+    if (rank == 0)
+    {
+        // Generate matrices.
+        a = matrixAlloc(MATRIX_SIZE_M, MATRIX_SIZE_P);
+        b = matrixAlloc(MATRIX_SIZE_P, MATRIX_SIZE_N);
         matrixFillRandom(a);
         matrixFillRandom(b);
     }
 
+    // Broadcast data.
+    mpiBroadcastMatrix(&a, rank);
+    mpiBroadcastMatrix(&b, rank);
+
+    c = matrixAlloc(a.height, b.width);
     matrixZero(c);
 
-    MPI_Bcast(&a.height, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Bcast(&a.width,  1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Bcast(a.values, a.height * a.width, MPI_INT, 0, MPI_COMM_WORLD);
+    // Execute workload.
+    {
+        int offset;
+        int size;
+        mpiGetWorkRange(rank, count, c.height, &offset, &size);
+        matrixMultiply(a, b, c, offset, offset + size);
+    }
 
-    MPI_Bcast(&b.height, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Bcast(&b.width,  1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Bcast(b.values, b.height * b.width, MPI_INT, 0, MPI_COMM_WORLD);
-    
-    int offset;
-    int size;
-    getWorkRange(rank, count, c.height, &offset, &size);
+    // Gather all matrices
+    Matrix *matrices = mpiGatherMatrices(c, rank, count);
 
-    matrixMultiply(a, b, c, offset, offset+size);
-
-    printf("[worker:%d] c = ", rank);
-    matrixPrint(c);
-
-    /*
-    int *output = 0;
-
+    // Combine values.
     if (rank == 0)
-        output = (int *)malloc(sizeof(int) * c.height * c.width);
+    {
+        for (int worker_rank = 0; worker_rank < count; worker_rank++)
+        {
+            for (int i = 1; i < c.height * c.width; i++)
+            {
+                c.values[i] += matrices[worker_rank].values[i];
+            }
+        }
 
-    MPI_Reduce(c.values, &output, c.height * c.width, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
-    */
+        if (OUTPUT_ENABLED)
+        {
+            printf("[worker:%d] c = ", rank);
+            matrixPrint(c);
+        }
+    }
 
     MPI_Finalize();
 
     return 0;
 }
 
-Matrix matrixAlloc(int height, int width) {
-    Matrix m = {0};
-    m.height = height;
-    m.width = width;
-    m.values = (int *)malloc(height * width * sizeof(int));
-    return m;
-}
-
-void matrixFillRandom(Matrix m) {
-    for (int index = 0; index < m.height * m.width; index++) {
-        m.values[index] = rand() % 10;
-    }
-}
-
-void matrixPrint(Matrix m)
+Matrix *mpiGatherMatrices(Matrix m, int rank, int count)
 {
-    printf("{\n");
-    
-    for (int row = 0; row < m.height; row += 1) {
-        printf("  ");
-        for (int column = 0; column < m.width; column += 1) {
-            printf("%d, ", m.values[row * m.width + column]);
-        }
-        printf("\n");
+    int *received = 0;
+
+    if (rank == 0)
+    {
+        received = (int *)malloc(count * m.height * m.width * sizeof(int));
     }
 
-    printf("}\n");
+    MPI_Gather(m.values, m.height * m.width, MPI_INT, received, m.height * m.width, MPI_INT, 0, MPI_COMM_WORLD);
+
+    Matrix *matrices = (Matrix *)malloc(count * sizeof(Matrix));
+
+    for (int i = 0; i < count; i++)
+    {
+        matrices[i].height = m.height;
+        matrices[i].width = m.width;
+        matrices[i].values = &received[m.height * m.width * i];
+    }
+
+    return matrices;
 }
 
-void getWorkRange(int work_index, int work_count, int data_size, int *offsetOut, int *sizeOut) {
+void mpiBroadcastMatrix(Matrix *m, int rank)
+{
+    MPI_Bcast(&m->height, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&m->width, 1, MPI_INT, 0, MPI_COMM_WORLD);
+
+    if (rank != 0)
+    {
+        m->values = (int *)malloc(m->height * m->width * sizeof(int));
+    }
+
+    MPI_Bcast(m->values, m->height * m->width, MPI_INT, 0, MPI_COMM_WORLD);
+}
+
+void mpiGetWorkRange(int work_index, int work_count, int data_size, int *offsetOut, int *sizeOut)
+{
     int baseSize = data_size / work_count;
     int baseOffset = work_index * baseSize;
     int leftOut = data_size % work_count;
@@ -129,8 +153,46 @@ void getWorkRange(int work_index, int work_count, int data_size, int *offsetOut,
     *sizeOut = size;
 }
 
-int getMatrixIndex(Matrix m, int row, int column) {
-    if (row < 0 || row >= m.height || column < 0 || column >= m.width) {
+Matrix matrixAlloc(int height, int width)
+{
+    Matrix m = {0};
+    m.height = height;
+    m.width = width;
+    m.values = (int *)malloc(height * width * sizeof(int));
+    return m;
+}
+
+void matrixFillRandom(Matrix m)
+{
+    for (int index = 0; index < m.height * m.width; index++)
+    {
+        m.values[index] = rand() % 10;
+    }
+}
+
+void matrixPrint(Matrix m)
+{
+    printf("{\n");
+
+    for (int row = 0; row < m.height; row += 1)
+    {
+        printf("  ");
+
+        for (int column = 0; column < m.width; column += 1)
+        {
+            printf("%d, ", m.values[row * m.width + column]);
+        }
+
+        printf("\n");
+    }
+
+    printf("}\n");
+}
+
+int getMatrixIndex(Matrix m, int row, int column)
+{
+    if (row < 0 || row >= m.height || column < 0 || column >= m.width)
+    {
         printf("ERROR: Invalid coordinates (%d, %d) for matrix of size (%d, %d).\n", row, column, m.height, m.width);
         return 0;
     }
@@ -138,34 +200,29 @@ int getMatrixIndex(Matrix m, int row, int column) {
     return row * m.width + column;
 }
 
-void matrixZero(Matrix m) {
+void matrixZero(Matrix m)
+{
     memset(m.values, 0, m.height * m.width * sizeof(int));
 }
 
-void matrixSum(Matrix a, Matrix b, Matrix out) {
-    if (a.height != b.height || b.height != out.height || a.width != b.width || b.width != out.width) {
-        printf("ERROR: Unable to add matrices of size (%d, %d) and (%d, %d) into (%d, %d).\n", a.height, a.width, b.height, b.width, out.height, out.width);
-        return;
-    }
-
-    for (int i = 0; i < a.height * a.width; i++) {
-        out.values[i] = a.values[i] + b.values[i];
-    }
-}
-
-void matrixMultiply(Matrix a, Matrix b, Matrix out, int rowStart, int rowEnd) {
-    if (a.height != out.height || a.width != b.height || b.width != out.width) {
+void matrixMultiply(Matrix a, Matrix b, Matrix out, int rowStart, int rowEnd)
+{
+    if (a.height != out.height || a.width != b.height || b.width != out.width)
+    {
         printf("ERROR: Unable to multiply matrices of size (%d, %d) and (%d, %d) into (%d, %d).\n", a.height, a.width, b.height, b.width, out.height, out.width);
         return;
     }
 
-    for (int row = rowStart; row < rowEnd; row++) {
-        for (int column = 0; column < out.width; column++) {
+    for (int row = rowStart; row < rowEnd; row++)
+    {
+        for (int column = 0; column < out.width; column++)
+        {
             int outIndex = getMatrixIndex(out, row, column);
             out.values[outIndex] = 0;
 
-            for (int index = 0; index < a.width; index++) {
-                int aIndex = getMatrixIndex(a, row,   index);
+            for (int index = 0; index < a.width; index++)
+            {
+                int aIndex = getMatrixIndex(a, row, index);
                 int bIndex = getMatrixIndex(b, index, column);
                 out.values[outIndex] += a.values[aIndex] * b.values[bIndex];
             }
