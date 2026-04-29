@@ -55,20 +55,20 @@ https://www.glennklockwood.com/garden/InfiniBand
 1. **2D-Gitter mit n x n Knoten**
    - max: (n - 1) + (n - 1) = 2(n - 1)
      ![Grid example](fig/01/4x4_Grid.png)
-     n = 4
-    d~max = 6
+     n = 4;
+    d<sub>max</sub> = 6
 2. **2D-Torus mit n x n Knoten**
    - max: n
      ![Torus example](fig/01/4x4_Torus.png)
-     n = 4
-     d~max = 4
+     n = 4;
+     d<sub>max</sub> = 4
 3. **Hypercube mit der Dimension n**
    - max: n
      ![Hypercube example](fig/01/4D_Hypercube.png)
-     n = 4
-     d~max = 4
+     n = 4;
+     d<sub>max</sub> = 4
 4. **Bus mit n Knoten**
    - max: n - 1
      ![Bus example](fig/01/4_Bus.png)
-     n = 4
-     d~max = 6
+     n = 4;
+     d<sub>max</sub> = 3
