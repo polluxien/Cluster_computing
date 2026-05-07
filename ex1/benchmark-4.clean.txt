@@ -1,0 +1,11 @@
+0:12.65elapsed 391%CPU
+0:13.59elapsed 383%CPU
+0:13.11elapsed 384%CPU
+0:12.93elapsed 386%CPU
+0:12.94elapsed 386%CPU
+0:13.00elapsed 384%CPU
+0:13.15elapsed 384%CPU
+0:12.97elapsed 385%CPU
+0:12.65elapsed 388%CPU
+0:12.41elapsed 390%CPU
+0:12.38elapsed 389%CPU

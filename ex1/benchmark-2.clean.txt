@@ -1,0 +1,10 @@
+0:25.08elapsed 198%CPU
+0:25.05elapsed 198%CPU
+0:25.04elapsed 198%CPU
+0:25.02elapsed 198%CPU
+0:25.23elapsed 198%CPU
+0:25.09elapsed 198%CPU
+0:25.09elapsed 198%CPU
+0:25.18elapsed 198%CPU
+0:25.21elapsed 198%CPU
+0:25.07elapsed 198%CPU
