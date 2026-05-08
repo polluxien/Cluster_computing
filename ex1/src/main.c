@@ -17,6 +17,10 @@
 #define MATRIX_RAND_LOW (0)
 #define MATRIX_RAND_HIGH (2)
 
+#define M (1024ULL)
+#define N M
+#define P M
+
 void memory_print(int byte_count)
 {
     double number = byte_count;
@@ -54,8 +58,12 @@ int main(int argc, char **argv)
         /*
         for benchmarking purposes we create a matrix to be
         defined in such a way to take maximal possible time to compute
-        in given space complexity*/
-        MatrixWorkload work = workload_max_time(SPACE_COMPLEXITY);
+        in given space complexity
+        MatrixParams work = workload_max_time(SPACE_COMPLEXITY);*/
+
+        // enough just to run a program using macros from above
+        // as default there are 1024 colums and exact same number of raws for each matrix
+        MatrixParams work = create_default_workload(M, N, P);
         printf("M, P, N :=: %d, %d, %d\n", work.m, work.p, work.n);
 
         worker_printf("Workers = %d.\n", worker_count);
