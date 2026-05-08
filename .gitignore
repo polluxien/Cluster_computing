@@ -1,0 +1,12 @@
+# C-Stuff
+*.aux
+*.log
+*.o
+*.out
+*.d
+uni
+_notes
+
+# Mac VScode
+*.vscode/*
+*.DS_Store
