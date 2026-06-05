@@ -186,3 +186,23 @@ image_time          =            0 ns (  0.000 sec) [  0.00%]
 multi_compute_time  = 192678814743 ns (192.678 sec) [ 97.59%]
 single_compute_time =       531980 ns (  0.000 sec) [  0.00%]
 comm_time           =   4731886175 ns (  4.731 sec) [  2.40%]
+================================================================================
+worker_count        = 6
+iteration_count     = 3600
+body_count          = 6000
+theta               = 1.2
+total_time          = 104338106000 ns (104.338 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  =  95217058000 ns ( 95.217 sec) [ 91.26%]
+single_compute_time =       252000 ns (  0.000 sec) [  0.00%]
+comm_time           =   9113104000 ns (  9.113 sec) [  8.73%]
+================================================================================
+worker_count        = 10
+iteration_count     = 3600
+body_count          = 10000
+theta               = 1.2
+total_time          = 241612975000 ns (241.612 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  = 211777551000 ns (211.777 sec) [ 87.65%]
+single_compute_time =       428000 ns (  0.000 sec) [  0.00%]
+comm_time           =  29780044000 ns ( 29.780 sec) [ 12.33%]

@@ -28,4 +28,4 @@ clean:
 	@mkdir dist
 
 $(TARGET): $(C_FILES) $(H_FILES)
-	@mpicc -g -o $@ $^ -lm # -lraylib
+	@mpicc -g -o $@ $(C_FILES) -lm # -lraylib

@@ -18,7 +18,7 @@ const int imageSize         = 1024;
 const int videoFramesPerSecond = 60;
 
 // Simulation parameters.
-const int    simBodyCount = 6000;
+const int    simBodyCount = 10000;
 const double simStep      = 1.0 / (double)videoFramesPerSecond;
 const V2     simPosLow    = (V2){-200, -200};
 const V2     simPosHigh   = (V2){ 200,  200};
