@@ -1,0 +1,208 @@
+================================================================================
+worker_count        = 1
+iteration_count     = 3600
+body_count          = 300
+total_time          =   2625792508 ns (  2.625 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  =   2623421583 ns (  2.623 sec) [ 99.91%]
+single_compute_time =        31469 ns (  0.000 sec) [  0.00%]
+comm_time           =      1201327 ns (  0.001 sec) [  0.05%]
+================================================================================
+worker_count        = 2
+iteration_count     = 3600
+body_count          = 300
+total_time          =   2809479820 ns (  2.809 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  =   2746711026 ns (  2.746 sec) [ 97.77%]
+single_compute_time =        32275 ns (  0.000 sec) [  0.00%]
+comm_time           =     61565659 ns (  0.061 sec) [  2.19%]
+================================================================================
+worker_count        = 3
+iteration_count     = 3600
+body_count          = 300
+total_time          =   3177239830 ns (  3.177 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  =   3010357011 ns (  3.010 sec) [ 94.75%]
+single_compute_time =        33931 ns (  0.000 sec) [  0.00%]
+comm_time           =    165607091 ns (  0.165 sec) [  5.21%]
+================================================================================
+worker_count        = 4
+iteration_count     = 3600
+body_count          = 300
+total_time          =   3126949030 ns (  3.126 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  =   2850318668 ns (  2.850 sec) [ 91.15%]
+single_compute_time =        35690 ns (  0.000 sec) [  0.00%]
+comm_time           =    275111225 ns (  0.275 sec) [  8.80%]
+================================================================================
+worker_count        = 1
+iteration_count     = 3600
+body_count          = 2000
+total_time          =  26816893134 ns ( 26.816 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  =  26800502931 ns ( 26.800 sec) [ 99.94%]
+single_compute_time =       146405 ns (  0.000 sec) [  0.00%]
+comm_time           =     12574884 ns (  0.012 sec) [  0.05%]
+================================================================================
+worker_count        = 2
+iteration_count     = 3600
+body_count          = 2000
+total_time          =  40908621367 ns ( 40.908 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  =  40358102455 ns ( 40.358 sec) [ 98.65%]
+single_compute_time =       336009 ns (  0.000 sec) [  0.00%]
+comm_time           =    541860287 ns (  0.541 sec) [  1.32%]
+================================================================================
+worker_count        = 3
+iteration_count     = 3600
+body_count          = 2000
+total_time          =  41498334106 ns ( 41.498 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  =  40081496995 ns ( 40.081 sec) [ 96.59%]
+single_compute_time =       204269 ns (  0.000 sec) [  0.00%]
+comm_time           =   1409739390 ns (  1.409 sec) [  3.40%]
+================================================================================
+worker_count        = 4
+iteration_count     = 3600
+body_count          = 2000
+total_time          =  44675567818 ns ( 44.675 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  =  41938913859 ns ( 41.938 sec) [ 93.87%]
+single_compute_time =       212060 ns (  0.000 sec) [  0.00%]
+comm_time           =   2731275044 ns (  2.731 sec) [  6.11%]
+================================================================================
+worker_count        = 1
+iteration_count     = 3600
+body_count          = 10000
+total_time          = 272855314600 ns (272.855 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  = 272795780766 ns (272.795 sec) [ 99.98%]
+single_compute_time =      2145894 ns (  0.002 sec) [  0.00%]
+comm_time           =     17801477 ns (  0.017 sec) [  0.01%]
+================================================================================
+worker_count        = 2
+iteration_count     = 3600
+body_count          = 10000
+total_time          = 484793268575 ns (484.793 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  = 482606868531 ns (482.606 sec) [ 99.55%]
+single_compute_time =      2171530 ns (  0.002 sec) [  0.00%]
+comm_time           =   2137042289 ns (  2.137 sec) [  0.44%]
+================================================================================
+worker_count        = 3
+iteration_count     = 3600
+body_count          = 10000
+total_time          = 531171365630 ns (531.171 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  = 518395055758 ns (518.395 sec) [ 97.59%]
+single_compute_time =      1850862 ns (  0.001 sec) [  0.00%]
+comm_time           =  12721653118 ns ( 12.721 sec) [  2.40%]
+================================================================================
+worker_count        = 4
+iteration_count     = 3600
+body_count          = 10000
+total_time          = 591577644018 ns (591.577 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  = 568635746618 ns (568.635 sec) [ 96.12%]
+single_compute_time =      1701081 ns (  0.001 sec) [  0.00%]
+comm_time           =  22897052992 ns ( 22.897 sec) [  3.87%]
+================================================================================
+worker_count        = 1
+iteration_count     = 3600
+body_count          = 1000
+theta               = 1.200000
+total_time          =  12228306508 ns ( 12.228 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  =  12222076264 ns ( 12.222 sec) [ 99.95%]
+single_compute_time =       126324 ns (  0.000 sec) [  0.00%]
+comm_time           =      3170406 ns (  0.003 sec) [  0.03%]
+================================================================================
+worker_count        = 1
+iteration_count     = 3600
+body_count          = 1000
+theta               = 1.200000
+total_time          =  11272255102 ns ( 11.272 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  =  11265724177 ns ( 11.265 sec) [ 99.94%]
+single_compute_time =       102238 ns (  0.000 sec) [  0.00%]
+comm_time           =      3567551 ns (  0.003 sec) [  0.03%]
+================================================================================
+worker_count        = 2
+iteration_count     = 3600
+body_count          = 1000
+theta               = 1.2
+total_time          =  15807413148 ns ( 15.807 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  =  15608842583 ns ( 15.608 sec) [ 98.74%]
+single_compute_time =       172787 ns (  0.000 sec) [  0.00%]
+comm_time           =    194310641 ns (  0.194 sec) [  1.23%]
+================================================================================
+worker_count        = 3
+iteration_count     = 3600
+body_count          = 1000
+theta               = 1.2
+total_time          =  17513824877 ns ( 17.513 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  =  16432017399 ns ( 16.432 sec) [ 93.82%]
+single_compute_time =       177741 ns (  0.000 sec) [  0.00%]
+comm_time           =   1075840785 ns (  1.075 sec) [  6.14%]
+================================================================================
+worker_count        = 4
+iteration_count     = 3600
+body_count          = 1000
+theta               = 1.2
+total_time          =  19319369438 ns ( 19.319 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  =  17603775545 ns ( 17.603 sec) [ 91.12%]
+single_compute_time =       160151 ns (  0.000 sec) [  0.00%]
+comm_time           =   1707644771 ns (  1.707 sec) [  8.84%]
+================================================================================
+worker_count        = 1
+iteration_count     = 3600
+body_count          = 6000
+theta               = 1.2
+total_time          = 174862684192 ns (174.862 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  = 174824566286 ns (174.824 sec) [ 99.98%]
+single_compute_time =       772941 ns (  0.000 sec) [  0.00%]
+comm_time           =     20299099 ns (  0.020 sec) [  0.01%]
+================================================================================
+worker_count        = 2
+iteration_count     = 3600
+body_count          = 6000
+theta               = 1.2
+total_time          = 250205243570 ns (250.205 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  = 248659856932 ns (248.659 sec) [ 99.38%]
+single_compute_time =       839486 ns (  0.000 sec) [  0.00%]
+comm_time           =   1516609255 ns (  1.516 sec) [  0.61%]
+================================================================================
+worker_count        = 3
+iteration_count     = 3600
+body_count          = 6000
+theta               = 1.2
+total_time          = 197431813130 ns (197.431 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  = 192678814743 ns (192.678 sec) [ 97.59%]
+single_compute_time =       531980 ns (  0.000 sec) [  0.00%]
+comm_time           =   4731886175 ns (  4.731 sec) [  2.40%]
+================================================================================
+worker_count        = 6
+iteration_count     = 3600
+body_count          = 6000
+theta               = 1.2
+total_time          = 104338106000 ns (104.338 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  =  95217058000 ns ( 95.217 sec) [ 91.26%]
+single_compute_time =       252000 ns (  0.000 sec) [  0.00%]
+comm_time           =   9113104000 ns (  9.113 sec) [  8.73%]
+================================================================================
+worker_count        = 10
+iteration_count     = 3600
+body_count          = 10000
+theta               = 1.2
+total_time          = 241612975000 ns (241.612 sec) [100.00%]
+image_time          =            0 ns (  0.000 sec) [  0.00%]
+multi_compute_time  = 211777551000 ns (211.777 sec) [ 87.65%]
+single_compute_time =       428000 ns (  0.000 sec) [  0.00%]
+comm_time           =  29780044000 ns ( 29.780 sec) [ 12.33%]
