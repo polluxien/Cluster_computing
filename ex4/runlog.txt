@@ -1,0 +1,54 @@
+================================================================================
+worker_count        = 4
+iteration_count     = 3600
+body_count          = 6000
+theta               = 1.2
+total_time          = 101822434000 ns (101.822 sec) [100.00%]
+multi_compute_time  =  79391543000 ns ( 79.391 sec) [ 77.97%]
+single_compute_time =  22108656000 ns ( 22.108 sec) [ 21.71%]
+comm_time           =            0 ns (  0.000 sec) [  0.00%]
+================================================================================
+worker_count        = 4
+iteration_count     = 3600
+body_count          = 6000
+theta               = 1.2
+total_time          = 102090624000 ns (102.090 sec) [100.00%]
+multi_compute_time  =  79440519000 ns ( 79.440 sec) [ 77.81%]
+single_compute_time =  22141565000 ns ( 22.141 sec) [ 21.69%]
+comm_time           =            0 ns (  0.000 sec) [  0.00%]
+================================================================================
+worker_count        = 4
+iteration_count     = 3600
+body_count          = 6000
+theta               = 1.2
+total_time          = 112483871000 ns (112.483 sec) [100.00%]
+multi_compute_time  =  87542731000 ns ( 87.542 sec) [ 77.83%]
+single_compute_time =  22987900000 ns ( 22.987 sec) [ 20.44%]
+comm_time           =            0 ns (  0.000 sec) [  0.00%]
+================================================================================
+worker_count        = 4
+iteration_count     = 3600
+body_count          = 6000
+theta               = 1.2
+total_time          = 114733093000 ns (114.733 sec) [100.00%]
+multi_compute_time  =  88863517000 ns ( 88.863 sec) [ 77.45%]
+single_compute_time =  24130792000 ns ( 24.130 sec) [ 21.03%]
+comm_time           =            0 ns (  0.000 sec) [  0.00%]
+================================================================================
+worker_count        = 4
+iteration_count     = 3600
+body_count          = 6000
+theta               = 1.2
+total_time          = 112614228000 ns (112.614 sec) [100.00%]
+multi_compute_time  =  88530140000 ns ( 88.530 sec) [ 78.61%]
+single_compute_time =  23708212000 ns ( 23.708 sec) [ 21.05%]
+comm_time           =            0 ns (  0.000 sec) [  0.00%]
+================================================================================
+worker_count        = 4
+iteration_count     = 3600
+body_count          = 6000
+theta               = 1.2
+total_time          = 112377769000 ns (112.377 sec) [100.00%]
+multi_compute_time  =  88384335000 ns ( 88.384 sec) [ 78.65%]
+single_compute_time =  23624657000 ns ( 23.624 sec) [ 21.02%]
+comm_time           =            0 ns (  0.000 sec) [  0.00%]

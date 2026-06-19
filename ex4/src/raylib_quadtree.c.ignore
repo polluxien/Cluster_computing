@@ -1,0 +1,179 @@
+#include <math.h>
+#include <stdio.h>
+#include <mpi.h>
+#include <raylib.h>
+
+#include "v2.h"
+#include "point.h"
+#include "quadtree.h"
+
+// Flag to enable image generation for debug purposes.
+const int imageGenerationOn = 0;
+const int imageSize         = 1024;
+
+// Parameter to easly calculate duration and timestep size of the simulation.
+const int videoFramesPerSecond = 60;
+
+// Simulation parameters.
+const int    simBodyCount = 500;
+const double simStep      = 1.0 / (double)videoFramesPerSecond;
+const V2     simPosLow    = (V2){-400, -400};
+const V2     simPosHigh   = (V2){ 400,  400};
+const double simMassLow   = { 0.1 };
+const double simMassHigh  = { 10.0 };
+const int    simIterCount = 60 * videoFramesPerSecond;
+
+// Globals for MPI values of the worker.
+int workerRank  = 0;
+int workerCount = 1;
+
+#define arrayCount(a) (sizeof(a) / sizeof((a)[0]))
+
+int main(int argc, char **argv) {
+    Point *points     = 0;
+    int    pointCount = simBodyCount;
+
+    points = pointsAlloc(pointCount);
+    pointsGenerate(points, pointCount, simPosLow, simPosHigh, simMassLow, simMassHigh);
+
+    Quadtree tree = quadtreeAlloc(pointCount * 4);
+    
+    V2 windowSize = v2Subtract(simPosHigh, simPosLow);
+    SetConfigFlags(FLAG_MSAA_4X_HINT);
+    InitWindow(windowSize.x, windowSize.y, "Quadtree check");
+
+    Rect bounds = rect(simPosLow, simPosHigh);
+
+    int showPoints         = 1;
+    int shouldUpdatePoints = 1;
+    int showCumulated      = 0;
+    int showQuadtree       = 1;
+    int shouldSimulateStep = 0;
+
+    int shouldRegeneratePoints = 0;
+
+    while (!WindowShouldClose())
+    {
+        // Input
+        {
+            if (IsKeyPressed('R')) {
+                shouldRegeneratePoints = 1;
+            }
+
+            if (IsKeyPressed(' ')) {
+                shouldUpdatePoints = !shouldUpdatePoints;
+            }
+
+            if (IsKeyPressed('1')) {
+                showPoints = !showPoints;
+            }
+
+            if (IsKeyPressed('2')) {
+                showCumulated = !showCumulated;
+            }
+
+            if (IsKeyPressed('3')) {
+                showQuadtree = !showQuadtree;
+            }
+
+            if (IsKeyPressed('.')) {
+                shouldSimulateStep = 1;
+            }
+        }
+
+        // Update
+        {
+            if (shouldRegeneratePoints) {
+                pointsGenerate(points, pointCount, simPosLow, simPosHigh, simMassLow, simMassHigh);
+                shouldRegeneratePoints = 0;
+                shouldUpdatePoints = 1;
+            }
+            
+            bounds = rectPointBounds(points, pointCount);
+            quadtreeBuild(&tree, bounds, points, pointCount);
+
+            if (shouldUpdatePoints || shouldSimulateStep) {
+                shouldSimulateStep = 0;
+
+                for (int i = 0; i < pointCount; i++) {
+                    V2 force = quadtreeGetForce(&tree, points[i], 0.5);
+                    points[i].velocity = v2Add(points[i].velocity, v2Scale(force, simStep));
+                    points[i].position = v2Add(points[i].position, v2Scale(points[i].velocity, simStep));
+                }
+            }
+        }
+
+        BeginDrawing();
+            ClearBackground(WHITE);
+            double massMax      = quadtreeGetNodeByIndex(&tree, tree.root)->point.mass;
+            int    maxStackSize = 0;
+
+            // Draw quadtree
+            if (1) {
+                QuadtreeNodeIndex nodeStack[256]      = {0};
+                Rect              boundsStack[256]    = {0};
+                int               stackSize           = 0;
+
+                nodeStack[0]   = tree.root;
+                boundsStack[0] = tree.bounds;
+                stackSize++;
+
+                while (stackSize) {
+                    if (stackSize > maxStackSize) {
+                        maxStackSize = stackSize;
+                    }
+
+                    QuadtreeNodeIndex nodeIndex = nodeStack[stackSize-1];
+                    Rect              bounds    = boundsStack[stackSize-1];
+                    stackSize--;
+
+                    if (nodeIndex == QuadtreeNodeIndex_Null) {
+                        continue;
+                    }
+
+                    QuadtreeNode *node = quadtreeGetNodeByIndex(&tree, nodeIndex);
+                    V2 low  = v2Subtract(bounds.low,  simPosLow);
+                    V2 span = v2Subtract(bounds.high, bounds.low);
+                    V2 center = rectCenter(bounds);
+
+                    if (showQuadtree) {
+                        Color color = LIGHTGRAY;
+                        DrawRectangleLines(low.x, low.y, span.x, span.y, LIGHTGRAY);
+                    }
+
+                    V2 p = v2Subtract(node->point.position, simPosLow);
+                    double radius = 2 + pow(node->point.mass / massMax, 2) * 100;
+
+                    if (node->pointCount == 1) {
+                        if (showPoints)
+                            DrawCircle(p.x, p.y, 1, BLACK);
+                    } else {
+                        if (showCumulated) {
+                            DrawCircle(p.x, p.y, radius, Fade(PINK, 0.5));
+                        }
+                    }
+
+                    for (int quadIndex = 0; quadIndex < 4; quadIndex++) {
+                        if (node->quads[quadIndex] != QuadtreeNodeIndex_Null) {
+                            nodeStack[stackSize]   = node->quads[quadIndex];
+                            boundsStack[stackSize] = rectFromQuadIndex(bounds, quadIndex);
+                            stackSize++;
+                        }
+                    }
+                }
+            }
+
+            DrawFPS(10, 10);
+
+            {
+                char buffer[256] = {0};
+                sprintf(buffer, "Max stack depth = %4d", maxStackSize);
+                DrawText(buffer, windowSize.x / 2, 20, 20, BLUE);
+            }
+
+        EndDrawing();
+    }
+
+    CloseWindow();
+    return 0;
+}
