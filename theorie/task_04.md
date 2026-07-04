@@ -2,9 +2,10 @@
 
 ##### Die Grundlage für die Benutzung von Suchheuristiken ist die lokale, minimale Änderung in Elementarschritten. Wie können diese minimalen Änderungen (Elementarschritte) für die in der Vorlesung vorgestellten Beispiele von Zuordnungsproblemen aussehen?
 
-- Arbeiten mit kleinen, lokalen Änderungen an einer Lösung → Schritt für Schritt bessere Ergebnisse
-- Diese kleinen Schritte = **Elementarschritte**
-- Abhängig von der Problemdarstellung (meist String aus festen Einheiten)
+| Modell | Was es zeigt | Knotengewicht | Kantengewicht |
+|--------|--------------|---------------|---------------|
+| **TIG** | Kommunikationsfluss zwischen Threads | Rechenaufwand | Datenaustauschintensität |
+| **TPG** | Ausführungsabhängigkeiten (Wer vor wem?) | Ausführungszeit | Kommunikationsverzögerungen |
 ---
  
 ##### 1. Quantitative Partitionierung
